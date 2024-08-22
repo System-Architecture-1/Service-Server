@@ -1,4 +1,4 @@
-![9](https://github.com/user-attachments/assets/96925ca6-2bfc-456d-b809-2dccbed52ae9)## 프로젝트 개요
+## 프로젝트 개요
 ![1](https://github.com/user-attachments/assets/45bf5ba3-74b5-4278-b608-4302759db467)
 ![2](https://github.com/user-attachments/assets/f0f49968-ac89-43c0-bd22-5a432c8fbb5a)
 ![3](https://github.com/user-attachments/assets/13332bf2-5108-4881-8023-f1583e93ffc1)
