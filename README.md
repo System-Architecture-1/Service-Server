@@ -13,4 +13,5 @@
 
 <img width="1168" alt="스크린샷 2024-07-11 오후 2 25 10" src="https://github.com/user-attachments/assets/360a965c-3907-4573-a24d-056d860c9cb8">
 ## 아키텍처
+
 ![스크린샷 2024-08-01 오전 1 49 28](https://github.com/user-attachments/assets/ea62110a-3841-424f-a733-f09bd8e723ef)
