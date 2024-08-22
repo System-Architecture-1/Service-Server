@@ -10,7 +10,6 @@
 ![9](https://github.com/user-attachments/assets/43c3c3d9-b231-4c86-8afd-463e6306a5bc)
 
 ## ERD
-![스크린샷 2024-08-01 오전 1 49 28](https://github.com/user-attachments/assets/0eaa2bfd-e276-4736-8b5d-6218a2bfd5c2)
-
-## 아키텍처
 <img width="1168" alt="스크린샷 2024-07-11 오후 2 25 10" src="https://github.com/user-attachments/assets/360a965c-3907-4573-a24d-056d860c9cb8">
+## 아키텍처
+![스크린샷 2024-08-01 오전 1 49 28](https://github.com/user-attachments/assets/0eaa2bfd-e276-4736-8b5d-6218a2bfd5c2)
