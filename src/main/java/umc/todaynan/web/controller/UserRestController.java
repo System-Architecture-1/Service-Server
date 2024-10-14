@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import umc.todaynan.apiPayload.ApiResponse;
 import umc.todaynan.apiPayload.code.status.ErrorStatus;
 import umc.todaynan.apiPayload.code.status.SuccessStatus;
+import umc.todaynan.apiPayload.exception.GeneralException;
 import umc.todaynan.converter.PostConverter;
 import umc.todaynan.converter.UserConverter;
 import umc.todaynan.domain.entity.Post.Post.Post;
@@ -66,14 +67,11 @@ public class UserRestController {
             case GOOGLE -> {
                 Optional<TokenInfoDTO.GoogleTokenInfoDTO> googleTokenInfo = googleTokenService.verifyAccessToken(accessToken);
                 if (googleTokenInfo.isPresent()) {
-                    if (userRepository.existsByEmail(googleTokenInfo.get().getEmail())) {
-                        return ApiResponse.onFailure(ErrorStatus.USER_EXIST.getCode(), ErrorStatus.USER_EXIST.getMessage(), null);
-                    }
                     User user = userService.signupUser(joinUserDTO, googleTokenInfo.get().getEmail(), loginType);
                     Token token = tokenService.generateToken(user.getEmail(), "USER");
                     return ApiResponse.of(SuccessStatus.USER_JOIN, userConverter.toJoinResponseDTO(user, token));
                 } else {
-                    return ApiResponse.onFailure(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY.getCode(), ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY.getMessage(), null);
+                    throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
                 }
             }
 
@@ -92,7 +90,7 @@ public class UserRestController {
             }
 
             default -> {
-                return ApiResponse.onFailure(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY.getCode(), ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY.getMessage(), null);
+                throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
             }
         }
     }
@@ -108,8 +106,7 @@ public class UserRestController {
     public ApiResponse<String> verifyNickName(@PathVariable(name = "nickName") String nickName) {
         Boolean verify = userService.verifyNickName(nickName);
         if (verify) { //중복
-            return ApiResponse.onFailure(ErrorStatus.USER_NICKNAME_EXIST.getCode(),
-                    ErrorStatus.USER_NICKNAME_EXIST.getMessage(), null);
+            throw new GeneralException(ErrorStatus.USER_NICKNAME_EXIST);
         } else { //중복아님
             return ApiResponse.of(SuccessStatus.USER_NICKNAME_VERIFY, null);
         }
@@ -146,7 +143,7 @@ public class UserRestController {
                     }
                     return ApiResponse.of(SuccessStatus.USER_LOGIN, userService.loginUser(googleTokenInfo.get().getEmail()));
                 } else {
-                    return ApiResponse.onFailure(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY.getCode(), ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY.getMessage(), null);
+                    throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
                 }
             }
 
@@ -163,7 +160,7 @@ public class UserRestController {
             }
 
             default -> {
-                return ApiResponse.onFailure(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY.getCode(), ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY.getMessage(), null);
+                throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
             }
         }
     }
@@ -182,7 +179,7 @@ public class UserRestController {
             responseDto.setMessage("닉네임 수정 완료");
             return ApiResponse.onSuccess(responseDto);
         } else {
-            return ApiResponse.onFailure(ErrorStatus.USER_NOT_EXIST.getCode(), ErrorStatus.USER_NOT_EXIST.getMessage(), null);
+            throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
         }
     }
 
@@ -200,7 +197,7 @@ public class UserRestController {
             responseDto.setMessage("동네 변경 완료");
             return ApiResponse.onSuccess(responseDto);
         } else {
-            return ApiResponse.onFailure(ErrorStatus.USER_NOT_EXIST.getCode(), ErrorStatus.USER_NOT_EXIST.getMessage(), null);
+            throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
         }
 
     }
@@ -219,7 +216,7 @@ public class UserRestController {
             responseDto.setMessage("관심사 수정 완료");
             return ApiResponse.onSuccess(responseDto);
         } else {
-            return ApiResponse.onFailure(ErrorStatus.USER_NOT_EXIST.getCode(), ErrorStatus.USER_NOT_EXIST.getMessage(), null);
+            throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
         }
     }
 
@@ -237,7 +234,7 @@ public class UserRestController {
             responseDto.setMessage("유저 탈퇴 완료");
             return ApiResponse.onSuccess(responseDto);
         } else {
-            return ApiResponse.onFailure(ErrorStatus.USER_NOT_EXIST.getCode(), ErrorStatus.USER_NOT_EXIST.getMessage(), null);
+            throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
         }
 
     }
@@ -256,7 +253,7 @@ public class UserRestController {
             responseDto.setMessage("차단 완료");
             return ApiResponse.onSuccess(responseDto);
         } else {
-            return ApiResponse.onFailure(ErrorStatus.USER_NOT_EXIST.getCode(), ErrorStatus.USER_NOT_EXIST.getMessage(), null);
+            throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
         }
     }
 

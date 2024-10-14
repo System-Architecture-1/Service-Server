@@ -11,12 +11,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.todaynan.apiPayload.code.status.ErrorStatus;
+import umc.todaynan.apiPayload.exception.GeneralException;
 import umc.todaynan.apiPayload.exception.UserNotFoundException;
 import umc.todaynan.apiPayload.exception.handler.PreferCategoryHandler;
 import umc.todaynan.apiPayload.exception.handler.UserHandler;
 import umc.todaynan.converter.UserConverter;
 import umc.todaynan.converter.UserPreferConverter;
 import umc.todaynan.domain.entity.Post.Post.Post;
+import umc.todaynan.domain.entity.RefreshToken;
 import umc.todaynan.domain.entity.User.User.User;
 import umc.todaynan.domain.entity.User.UserLike.UserLike;
 import umc.todaynan.domain.entity.User.UserPrefer.PreferCategory;
@@ -49,6 +51,7 @@ public class UserServiceImpl implements UserService{
     private final PostCommentCommentRepository postCommentCommentRepository;
     private final PostCommentRepository postCommentRepository;
     private final PostRepository postRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final TokenService tokenService;
     private final UserConverter userConverter;
@@ -76,13 +79,16 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public User signupUser(UserRequestDTO.JoinUserRequestDTO joinUserDTO, String email, LoginType loginType) {
+        if (userRepository.existsByEmail(email)) {
+            throw new GeneralException(ErrorStatus.USER_EXIST);
+        }
         User newUser = UserConverter.toUserDTO(joinUserDTO, email, loginType);
 
         List<PreferCategory> preferCategoryList = joinUserDTO.getPreferCategory().stream()
-                .map(category -> {
-                    return preferCategoryRepository.findById(category).orElseThrow(() -> new PreferCategoryHandler(ErrorStatus.PREFER_CATEGORY_NOT_FOUND));
-                }).collect(Collectors.toList());
-
+                .map(category -> preferCategoryRepository.findById(category)
+                        .orElseThrow(() -> new GeneralException(ErrorStatus.PREFER_CATEGORY_NOT_FOUND))
+                )
+                .collect(Collectors.toList());
 
 
         List<UserPrefer> userPreferList = UserPreferConverter.toUserPreferCategoryList(preferCategoryList);
@@ -92,13 +98,8 @@ public class UserServiceImpl implements UserService{
 
         logger.debug("PreferCategory list created: {}", newUser.getUserPreferList());
 
+        return userRepository.save(newUser);
 
-        if(userRepository.existsByEmail(newUser.getEmail())){
-            return userRepository.findByEmail(newUser.getEmail()).orElseThrow(() -> new UserHandler(ErrorStatus.USER_ERROR));
-        }
-        else{
-            return userRepository.save(newUser);
-        }
     }
 
     @Override
@@ -124,6 +125,12 @@ public class UserServiceImpl implements UserService{
         if(userRepository.existsByEmail(email)) { //이미 존재
             Optional<User> user = userRepository.findByEmail(email);
             Token newToken = tokenService.generateToken(user.get().getEmail(), "USER");
+
+            if(refreshTokenRepository.existsRefreshTokenByEmail(email)) {
+                RefreshToken existRefreshToken = refreshTokenRepository.findRefreshTokenByEmail(email);
+                refreshTokenRepository.deleteById(existRefreshToken.getEmail());
+            }
+            refreshTokenRepository.save(new RefreshToken(newToken.getRefreshToken(), email));
 
             Date date = tokenService.getExpiration(newToken.getAccessToken());
             LocalDateTime expiration = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());

@@ -2,14 +2,18 @@ package umc.todaynan.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import umc.todaynan.apiPayload.ApiResponse;
 import umc.todaynan.apiPayload.code.status.ErrorStatus;
 import umc.todaynan.apiPayload.code.status.SuccessStatus;
+import umc.todaynan.apiPayload.exception.AuthenticationException;
 import umc.todaynan.converter.TokenConverter;
 import umc.todaynan.oauth2.Token;
 import umc.todaynan.oauth2.TokenService;
+import umc.todaynan.repository.RefreshTokenRepository;
 import umc.todaynan.web.dto.TokenDTO.TokenResponseDTO;
 
 @RestController
@@ -17,6 +21,8 @@ import umc.todaynan.web.dto.TokenDTO.TokenResponseDTO;
 public class TokenController {
     private final TokenService tokenService;
     private final TokenConverter tokenConverter;
+
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
     /**
@@ -39,16 +45,20 @@ public class TokenController {
     }
 
     @GetMapping("/token/regenerate")
-    public ApiResponse<TokenResponseDTO.TokenRefreshDTO> refreshAuth(HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<TokenResponseDTO.TokenRefreshDTO>> refreshAuth(HttpServletRequest request) {
         String token = request.getHeader("Refresh");
         if (token != null && tokenService.verifyToken(token)) {
             String email = tokenService.getUid(token);
-            Token newToken = tokenService.generateToken(email, "USER");
-
-            return ApiResponse.of(SuccessStatus.TOKEN_REFRESHED, tokenConverter.toTokenRefreshDTO(newToken));
+            String savedRefreshToken = tokenService.getRefreshTokenFromRepository(email);
+            if (savedRefreshToken != null && savedRefreshToken.equals(token)) {
+                Token newToken = tokenService.generateToken(email, "USER"); //access token 재발급
+                newToken.setRefreshToken(savedRefreshToken);
+                return ResponseEntity.ok(ApiResponse.of(SuccessStatus.TOKEN_REFRESHED, tokenConverter.toTokenRefreshDTO(newToken)));
+            }
         }
 
-        throw new RuntimeException("유효한 refresh 토큰이 아닙니다.");
+        throw new AuthenticationException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY); // Throw exception for invalid token
     }
+
 
 }
