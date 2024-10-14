@@ -121,6 +121,7 @@ public class UserRestController {
     @Operation(summary = "자동 로그인 API", description = "User Jwt Authorization")
     @GetMapping("/auto-login/")
     public ApiResponse<UserResponseDTO.AutoLoginResponseDTO> autoLogin(HttpServletRequest httpServletRequest) {
+        String df = "asdf";
         return ApiResponse.of(SuccessStatus.USER_LOGIN, userService.autoLoginUser(httpServletRequest));
     }
 
