@@ -11,7 +11,7 @@ pipeline {
         }
         stage('application properties 적용') {
             steps {
-                withCredentials([file(credentialsId: 'application properties', variable: 'SECRET_FILE')]) {
+                withCredentials([file(credentialsId: 'application_properties', variable: 'SECRET_FILE')]) {
                     sh 'cp $SECRET_FILE ./src/main/resources/application.properties'
                 }
             }
