@@ -199,7 +199,7 @@ public class UserRestController {
         } else {
             throw new GeneralException(ErrorStatus.USER_ACCESS_TOKEN_NOT_VERITY);
         }
-
+//1
     }
 
     @PatchMapping("/interest")
