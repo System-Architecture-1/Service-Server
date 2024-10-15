@@ -9,7 +9,7 @@ pipeline {
             GITHUB_CREDENTIALS = 'github'
             GITHUB_URL = 'https://github.com/KoRakunnn/todaynan_server'
             APPLICATION_PROPERTIES = 'application_properties'
-            INSTANCE_SSH_CREDENTIALS = 'instance_ssh_key'
+            INSTANCE_SSH_CREDENTIALS_1 = 'instance1'
         }
     stages {
         stage('Git Clone') {
@@ -56,10 +56,10 @@ pipeline {
 
         stage('Deploy to Instance') {
             steps {
-                sshagent(credentials: ["${INSTANCE_SSH_CREDENTIALS}"]) {
+                sshagent(credentials: ["${INSTANCE_SSH_CREDENTIALS_1}"]) {
                     sh '''
                         echo 'Deploying Docker container on Oracle instance...'
-                        ssh -o StrictHostKeyChecking=no ubuntu@{Private 또는 Public IP} "
+                        ssh -o StrictHostKeyChecking=no ubuntu@158.179.166.79 "
                         docker pull $DOCKER_IMAGE_NAME:latest && \
                         docker stop spring || true && \
                         docker rm spring || true && \
