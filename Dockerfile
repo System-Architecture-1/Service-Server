@@ -1,4 +1,4 @@
-FROM amazoncorretto:17
+FROM jenkins/jenkins:lts
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} my-project.jar
 ENTRYPOINT ["java","-jar","/my-project.jar"]

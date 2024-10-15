@@ -24,10 +24,15 @@ pipeline {
                 }
             }
         }
+        stage('Build') {
+            steps {
+                sh "./gradlew clean build"
+            }
+        }
 
         stage('Docker Build') {
             steps {
-                 dir("/var/jenkins_home/workspace/flyaway") {
+                 dir("/var/jenkins_home/workspace/todaynan") {
                      sh '''
                          echo 'Building Docker image...'
                          docker build -t $DOCKER_IMAGE_NAME:latest .
