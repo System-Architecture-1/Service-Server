@@ -25,6 +25,12 @@ pipeline {
             }
         }
 
+        stage('Build') {
+            steps {
+                sh "./gradlew clean build"
+            }
+        }
+
         stage('Docker Build') {
             steps {
                  dir("/var/jenkins_home/workspace/todaynan") {
