@@ -60,10 +60,10 @@ pipeline {
                     sh '''
                         echo 'Deploying Docker container on Oracle instance...'
                         ssh -o StrictHostKeyChecking=no ubuntu@158.179.166.79 "
-                        docker pull $DOCKER_IMAGE_NAME:latest && \
-                        docker stop spring || true && \
-                        docker rm spring || true && \
-                        docker run -d --name spring -p 8080:8080 $DOCKER_IMAGE_NAME:latest
+                        sudo docker pull $DOCKER_IMAGE_NAME:latest && \
+                        sudo docker stop spring || true && \
+                        sudo docker rm spring || true && \
+                        sudo docker run -d --name spring -p 8080:8080 $DOCKER_IMAGE_NAME:latest
                             "
                     '''
                 }
