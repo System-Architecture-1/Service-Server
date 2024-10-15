@@ -58,16 +58,17 @@ pipeline {
         stage('Deploy to Instance') {
             steps {
                 withCredentials([string(credentialsId: "${INSTANCE_IP_ADDRESS_1}", variable: 'INSTANCE_IP_ADDRESS_1')]) {
-                sshagent(credentials: ["${INSTANCE_SSH_CREDENTIALS_1}"]) {
-                    sh '''
-                        echo 'Deploying Docker container on Oracle instance...'
-                        ssh -o StrictHostKeyChecking=no ubuntu@${INSTANCE_IP_ADDRESS_1} "
-                        sudo docker pull $DOCKER_IMAGE_NAME:latest && \
-                        sudo docker stop spring || true && \
-                        sudo docker rm spring || true && \
-                        sudo docker run -d --name spring -p 8080:8080 $DOCKER_IMAGE_NAME:latest
+                    sshagent(credentials: ["${INSTANCE_SSH_CREDENTIALS_1}"]) {
+                        sh '''
+                            echo 'Deploying Docker container on Oracle instance...'
+                            ssh -o StrictHostKeyChecking=no ubuntu@${INSTANCE_IP_ADDRESS_1} "
+                            sudo docker pull $DOCKER_IMAGE_NAME:latest && \
+                            sudo docker stop spring || true && \
+                            sudo docker rm spring || true && \
+                            sudo docker run -d --name spring -p 8080:8080 $DOCKER_IMAGE_NAME:latest
                             "
-                    '''
+                        '''
+                    }
                 }
             }
         }
