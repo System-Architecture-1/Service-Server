@@ -57,6 +57,7 @@ pipeline {
 
         stage('Deploy to Instance') {
             steps {
+                withCredentials([string(credentialsId: "${INSTANCE_IP_ADDRESS_1}", variable: 'INSTANCE_IP_ADDRESS_1')]) {
                 sshagent(credentials: ["${INSTANCE_SSH_CREDENTIALS_1}"]) {
                     sh '''
                         echo 'Deploying Docker container on Oracle instance...'
