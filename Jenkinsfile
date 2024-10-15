@@ -24,11 +24,6 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
-            steps {
-                sh "./gradlew clean build"
-            }
-        }
 
         stage('Docker Build') {
             steps {
