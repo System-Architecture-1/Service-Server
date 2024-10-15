@@ -30,7 +30,7 @@ pipeline {
                  dir("/var/jenkins_home/workspace/todaynan") {
                      sh '''
                          echo 'Building Docker image...'
-                         sudo docker build -t $DOCKER_IMAGE_NAME:latest .
+                         docker build -t $DOCKER_IMAGE_NAME:latest .
                      '''
                  }
             }
@@ -42,7 +42,7 @@ pipeline {
                     sh '''
                         echo 'Logging into DockerHub...'
                         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                        sudo docker push $DOCKER_IMAGE_NAME:latest
+                        docker push $DOCKER_IMAGE_NAME:latest
                     '''
                 }
             }
