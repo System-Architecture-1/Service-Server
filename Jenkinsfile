@@ -24,13 +24,18 @@ pipeline {
                 }
             }
         }
+        stage('Build') {
+            steps {
+                sh "./gradlew clean build"
+            }
+        }
 
         stage('Docker Build') {
             steps {
                  dir("/var/jenkins_home/workspace/todaynan") {
                      sh '''
                          echo 'Building Docker image...'
-                         docker build -t $DOCKER_IMAGE_NAME:latest .
+                         sudo docker build -t $DOCKER_IMAGE_NAME:latest .
                      '''
                  }
             }
@@ -42,7 +47,7 @@ pipeline {
                     sh '''
                         echo 'Logging into DockerHub...'
                         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                        docker push $DOCKER_IMAGE_NAME:latest
+                        sudo docker push $DOCKER_IMAGE_NAME:latest
                     '''
                 }
             }
