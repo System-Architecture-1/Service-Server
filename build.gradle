@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'mysql:mysql-connector-java:8.0.32'
@@ -65,7 +66,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 
-
+	implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'com.squareup.okhttp3:okhttp:4.9.2'
 }
 
