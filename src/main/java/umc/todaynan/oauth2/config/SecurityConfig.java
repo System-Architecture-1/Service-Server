@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                         .requestMatchers("/token/**", "/user/signup/**", "/user/login/**", "/health", "/suggest/**" , "/hot/**").permitAll()
+                        .requestMatchers("/actuator/prometheus", "/metrics").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())) // Use custom entry point
