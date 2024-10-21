@@ -56,32 +56,6 @@ pipeline {
             }
         }
 
-        stage('Deploy to Instance') {
-            steps {
-                    script {
-                        def instances = [
-                            [ip: "${INSTANCE_IP_ADDRESS_1}", credentials: "${INSTANCE_SSH_CREDENTIALS_1}"],
-                            [ip: "${INSTANCE_IP_ADDRESS_2}", credentials: "${INSTANCE_SSH_CREDENTIALS_1}"]
-                        ]
 
-                        instances.each { instance ->
-                            withCredentials([string(credentialsId: instance.ip, variable: 'INSTANCE_IP_ADDRESS')]) {
-                                sshagent(credentials: [instance.credentials]) {
-                                    sh '''
-                                        echo "Deploying Docker container on Oracle instance ${INSTANCE_IP_ADDRESS}..."
-                                        ssh -o StrictHostKeyChecking=no ubuntu@${INSTANCE_IP_ADDRESS} "
-                                        sudo docker pull $DOCKER_IMAGE_NAME:latest && \
-                                        sudo docker stop spring || true && \
-                                        sudo docker rm spring || true && \
-                                        sudo docker run -d --name spring -p 8080:8080 $DOCKER_IMAGE_NAME:latest
-                                        "
-                                    '''
-                                }
-                            }
-                        }
-                    }
-                }
-
-        }
     }
 }
