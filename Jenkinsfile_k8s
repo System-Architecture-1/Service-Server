@@ -61,7 +61,7 @@ pipeline {
         stage('Deploy to K8s cluster') {
             steps {
                     withKubeConfig([credentialsId: 'k8s', serverUrl: 'https://152.67.212.217:6443']) {
-                                        sh '/usr/local/bin/kubectl apply -f deployment.yaml'
+                                        sh '/usr/local/bin/kubectl apply -f /var/lib/jenkins_home/deployment.yaml'
                                     }
                 }
 
