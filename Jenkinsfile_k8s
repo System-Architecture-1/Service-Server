@@ -12,7 +12,6 @@ pipeline {
             INSTANCE_SSH_CREDENTIALS_1 = 'instance1'
             INSTANCE_IP_ADDRESS_1 = 'instance1_ip'
             INSTANCE_IP_ADDRESS_2 = 'instance2_ip'
-            PATH = "/snap/bin:$PATH"  // kubectl 경로 추가
         }
     stages {
         stage('Git Clone') {
