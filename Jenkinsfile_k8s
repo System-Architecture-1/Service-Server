@@ -61,7 +61,6 @@ pipeline {
             steps {
                     script {
                         sh '''
-                                        sudo su
                                         echo "Deploying to Kubernetes cluster..."
                                         kubectl apply -f deployment.yaml
                           '''
