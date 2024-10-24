@@ -62,9 +62,10 @@ pipeline {
             steps {
                     script {
                         sh '''
-                                        echo "Deploying to Kubernetes cluster..."
-                                        kubectl apply -f deployment.yaml
-                          '''
+                                                echo "Current user is: $(whoami)"
+                                                echo "Deploying to Kubernetes cluster..."
+                                                kubectl apply -f deployment.yaml
+                                            '''
                     }
                 }
 
