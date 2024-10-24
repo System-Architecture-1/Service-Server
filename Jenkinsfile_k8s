@@ -12,6 +12,10 @@ pipeline {
             INSTANCE_SSH_CREDENTIALS_1 = 'instance1'
             INSTANCE_IP_ADDRESS_1 = 'instance1_ip'
             INSTANCE_IP_ADDRESS_2 = 'instance2_ip'
+
+            OCI_CLI_CONFIG_FILE = '/var/jenkins_home/.oci/config'
+            KUBECONFIG = '/var/jenkins_home/.kube/config'
+            PATH = "${PATH}:/var/jenkins_home/.local/bin"
         }
     stages {
         stage('Git Clone') {
