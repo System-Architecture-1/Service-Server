@@ -60,13 +60,9 @@ pipeline {
 
         stage('Deploy to K8s cluster') {
             steps {
-                    script {
-                        sh '''
-                                                echo "Current user is: $(whoami)"
-                                                echo "Deploying to Kubernetes cluster..."
-                                                kubectl apply -f deployment.yaml
-                                            '''
-                    }
+                    withKubeConfig([credentialsId: 'k8s', serverUrl: 'https://152.67.212.217:6443']) {
+                                        sh 'kubectl apply -f deployment.yaml'
+                                    }
                 }
 
         }
