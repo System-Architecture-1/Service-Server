@@ -34,7 +34,7 @@
 
 ## 아키텍처
 
-![image](https://github.com/user-attachments/assets/95bb3b9a-ae5c-4854-a823-e356113cf2bf)
+![image](https://github.com/user-attachments/assets/d8526be1-bab0-46a2-8925-e2b290360ec2)
 
 ## 역할
 * Entire Infra Setting
