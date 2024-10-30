@@ -30,7 +30,7 @@
 
 ## ERD
 
-<img width="1168" alt="스크린샷 2024-07-11 오후 2 25 10" src="https://github.com/user-attachments/assets/360a965c-3907-4573-a24d-056d860c9cb8">
+<img width="481" alt="스크린샷 2024-10-30 오전 11 40 38" src="https://github.com/user-attachments/assets/b5ea416d-ef52-437f-ba6b-f061265e7131">
 
 ## 아키텍처
 
